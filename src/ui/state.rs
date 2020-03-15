@@ -1,27 +1,35 @@
+use super::action::Action;
 use serde::Serialize;
 
-#[derive(Copy, Serialize)]
+#[derive(Serialize)]
 pub struct State {
     done: bool,
+    sent: Vec<String>,
 }
 
 impl State {
     pub fn new() -> Self {
-        State { done: false }
+        State {
+            done: false,
+            sent: vec![],
+        }
     }
 
     pub fn is_done(&self) -> bool {
         self.done
     }
 
-    pub fn reduce_command(&self, cmd: &str) -> Self {
-        if cmd == "quit" {
-            State {
+    pub fn reduce_command(&self, action: &Action) -> Self {
+        match action {
+            Action::Quit => State {
                 done: true,
-                ..(*self)
+                sent: self.sent.clone(),
+            },
+            Action::Send { input } => {
+                let mut sent: Vec<String> = self.sent.clone();
+                sent.push(input.to_string());
+                State { sent, ..(*self) }
             }
-        } else {
-            *self
         }
     }
 
@@ -33,6 +41,9 @@ impl State {
 
 impl std::clone::Clone for State {
     fn clone(&self) -> Self {
-        State { ..(*self) }
+        State {
+            sent: self.sent.clone(),
+            ..(*self)
+        }
     }
 }
