@@ -1,3 +1,5 @@
+extern crate serde;
+
 mod ui;
 
 use std::sync::mpsc;
@@ -42,5 +44,5 @@ pub fn main() {
 }
 
 fn output_state(state: &ui::state::State) {
-    println!("{{ \"_t:\": \"state\", \"done\": {} }}", state.is_done());
+    println!("state: {}", state.to_json());
 }

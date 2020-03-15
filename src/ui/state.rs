@@ -1,4 +1,6 @@
-#[derive(Copy)]
+use serde::Serialize;
+
+#[derive(Copy, Serialize)]
 pub struct State {
     done: bool,
 }
@@ -21,6 +23,11 @@ impl State {
         } else {
             *self
         }
+    }
+
+    pub fn to_json(&self) -> String {
+        // TODO: Handle error case better here
+        serde_json::to_string(self).unwrap()
     }
 }
 
