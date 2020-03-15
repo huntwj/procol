@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use std::convert::TryFrom;
 
 #[derive(Deserialize, Serialize)]
-#[serde(tag = "msg")]
+#[serde(tag = "msg", rename_all = "camelCase")]
 pub enum Action {
     Quit,
     Send { input: String },
