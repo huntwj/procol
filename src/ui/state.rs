@@ -1,11 +1,11 @@
 #[derive(Copy)]
-pub struct UiState {
+pub struct State {
     done: bool,
 }
 
-impl UiState {
+impl State {
     pub fn new() -> Self {
-        UiState { done: false }
+        State { done: false }
     }
 
     pub fn is_done(&self) -> bool {
@@ -14,7 +14,7 @@ impl UiState {
 
     pub fn reduce_command(&self, cmd: &str) -> Self {
         if cmd == "quit" {
-            UiState {
+            State {
                 done: true,
                 ..(*self)
             }
@@ -24,8 +24,8 @@ impl UiState {
     }
 }
 
-impl std::clone::Clone for UiState {
+impl std::clone::Clone for State {
     fn clone(&self) -> Self {
-        UiState { ..(*self) }
+        State { ..(*self) }
     }
 }
