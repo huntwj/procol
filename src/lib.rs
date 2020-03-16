@@ -57,11 +57,11 @@ fn output_state(state: &ui::state::State) {
 fn parse_command(command: String) -> String {
     let trimmed = command.trim();
     if trimmed == "quit" {
-        return serde_json::to_string(&Action::Quit).unwrap();
+        return Action::Quit.to_json();
     }
     if trimmed.starts_with("send ") {
         let input = trimmed[5..].to_string();
-        return serde_json::to_string(&Action::Send { input }).unwrap();
+        return Action::Send { input }.to_json();
     }
 
     trimmed.to_string()
