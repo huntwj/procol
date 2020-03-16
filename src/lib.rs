@@ -6,7 +6,7 @@ use std::convert::TryFrom;
 use std::sync::mpsc;
 use ui::action::Action;
 
-pub fn main() {
+pub fn run_loop() {
     let (tx_ui_update, rx_ui_update) = mpsc::channel::<String>();
 
     let mut current_state = ui::state::State::new();

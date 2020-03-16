@@ -1,5 +1,5 @@
 extern crate procol;
 
 fn main() {
-    procol::main();
+    procol::run_loop();
 }
