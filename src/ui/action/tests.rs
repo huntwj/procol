@@ -2,6 +2,13 @@ use super::Action;
 use std::convert::TryFrom;
 use std::result::Result;
 
+impl Action {
+    pub fn to_json(&self) -> String {
+        // TODO: Handle failure better
+        serde_json::to_string(self).unwrap()
+    }
+}
+
 #[test]
 fn serde_action_quit() -> Result<(), String> {
     check_serde_action(Action::Quit)

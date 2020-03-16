@@ -7,7 +7,7 @@ use std::sync::mpsc;
 use ui::action::Action;
 
 pub fn run_loop() {
-    let (tx_ui_update, rx_ui_update) = mpsc::channel::<String>();
+    let (tx_ui_update, rx_ui_update) = mpsc::channel::<Action>();
 
     let mut current_state = ui::state::State::new();
     output_state(&current_state);
@@ -16,9 +16,9 @@ pub fn run_loop() {
         let mut command = String::new();
         match std::io::stdin().read_line(&mut command) {
             Ok(_in_bytes) => {
-                tx_ui_update
-                    .send(parse_command(command))
-                    .expect("TODO: Handle tx error.");
+                parse_command(command).map(|action| {
+                    tx_ui_update.send(action).expect("TODO: Handle tx error.");
+                });
             }
             Err(_err) => break,
         }
@@ -54,17 +54,19 @@ fn output_state(state: &ui::state::State) {
     println!("state: {}", state.to_json());
 }
 
-fn parse_command(command: String) -> String {
+fn parse_command(command: String) -> Option<Action> {
     let trimmed = command.trim();
-    if trimmed == "quit" {
-        return Action::Quit.to_json();
+    if trimmed == "/quit" {
+        return Some(Action::Quit);
     }
-    if trimmed.starts_with("send ") {
-        let input = trimmed[5..].to_string();
-        return Action::Send { input }.to_json();
+    if trimmed.starts_with("/send ") {
+        let input = trimmed[6..].to_string();
+        return Some(Action::Send { input });
     }
 
-    trimmed.to_string()
+    return Some(Action::Send {
+        input: trimmed.to_string(),
+    });
 }
 
 fn print_help() {

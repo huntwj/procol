@@ -11,13 +11,6 @@ pub enum Action {
     Send { input: String },
 }
 
-impl Action {
-    pub fn to_json(&self) -> String {
-        // TODO: Handle failure better
-        serde_json::to_string(self).unwrap()
-    }
-}
-
 impl TryFrom<String> for Action {
     type Error = serde_json::error::Error;
 
