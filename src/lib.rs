@@ -10,7 +10,6 @@ pub fn run_loop() {
     let (tx_ui_update, rx_ui_update) = mpsc::channel::<Action>();
 
     let mut current_state = ui::state::State::new();
-    output_state(&current_state);
 
     let _in_thread = std::thread::spawn(move || loop {
         let mut command = String::new();
@@ -59,6 +58,10 @@ fn parse_command(command: String) -> Option<Action> {
     if trimmed == "/quit" {
         return Some(Action::Quit);
     }
+    if trimmed == "/help" {
+        print_help();
+        return None;
+    }
     if trimmed.starts_with("/send ") {
         let input = trimmed[6..].to_string();
         return Some(Action::Send { input });
@@ -70,12 +73,8 @@ fn parse_command(command: String) -> Option<Action> {
 }
 
 fn print_help() {
-    println!("To Quit: {}", serde_json::to_string(&Action::Quit).unwrap());
-    println!(
-        "To Send: {}",
-        serde_json::to_string(&Action::Send {
-            input: "message".to_string()
-        })
-        .unwrap()
-    );
+    println!("\nDhai'Procol Help:");
+    println!("  To Quit: /quit");
+    println!("  To Send: /send <message>");
+    println!("\n  Other commands will be converted as a raw Send command.\n")
 }
