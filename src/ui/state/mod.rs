@@ -8,6 +8,7 @@ pub struct State {
 }
 
 impl State {
+    /// Creates a new state with an initial state.
     pub fn new() -> Self {
         State {
             done: false,
@@ -15,6 +16,7 @@ impl State {
         }
     }
 
+    /// Returns true if the state is ready to exit, false otherwise.
     pub fn is_done(&self) -> bool {
         self.done
     }

@@ -34,23 +34,23 @@ pub fn run_loop() {
                 current_state = next_state;
             }
             Err(err) => {
-                println!("Invalid command: '{}'", err);
+                eprintln!("Invalid command: '{}'", err);
             }
         }
 
         if current_state.is_done() {
-            println!("We are done.");
+            eprintln!("We are done.");
             break;
         }
     }
 
-    println!("Quit requested. Waiting for jobs to complete...");
+    eprintln!("Quit requested. Waiting for jobs to complete...");
     // TODO: tell input sources to close and wait for them.
-    println!("...done. Goodbye!  And thank you for using Procol!");
+    eprintln!("...done. Goodbye!  And thank you for using Procol!");
 }
 
 fn output_state(state: &ui::state::State) {
-    println!("state: {}", state.to_json());
+    println!("{}", state.to_json());
 }
 
 fn parse_command(command: String) -> Option<Action> {
@@ -73,8 +73,8 @@ fn parse_command(command: String) -> Option<Action> {
 }
 
 fn print_help() {
-    println!("\nDhai'Procol Help:");
-    println!("  To Quit: /quit");
-    println!("  To Send: /send <message>");
-    println!("\n  Other commands will be converted as a raw Send command.\n")
+    eprintln!("\nDhai'Procol Help:");
+    eprintln!("  To Quit: /quit");
+    eprintln!("  To Send: /send <message>");
+    eprintln!("\n  Other commands will be converted as a raw Send command.\n")
 }
