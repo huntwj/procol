@@ -1,3 +1,5 @@
+extern crate procol;
+
 fn main() {
-    println!("Hello, world!");
+    procol::run_loop();
 }
