@@ -2,7 +2,6 @@ extern crate serde;
 
 mod ui;
 
-use std::convert::TryFrom;
 use std::sync::mpsc;
 use ui::action::Action;
 
@@ -26,17 +25,10 @@ pub fn run_loop() {
     print_help();
 
     for command in rx_ui_update {
-        match ui::action::Action::try_from(command) {
-            Ok(action) => {
-                let next_state = current_state.reduce_command(&action);
-                // TODO: Replace this with a diff.
-                output_state(&next_state);
-                current_state = next_state;
-            }
-            Err(err) => {
-                eprintln!("Invalid command: '{}'", err);
-            }
-        }
+        let next_state = current_state.reduce_command(&command);
+        // TODO: Replace this with a diff.
+        output_state(&next_state);
+        current_state = next_state;
 
         if current_state.is_done() {
             eprintln!("We are done.");
